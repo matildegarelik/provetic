@@ -1,0 +1,353 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>ProveTic - Stock Automático</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="{{ url_for('static', filename='landing.css') }}">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css">
+</head>
+<body>
+    <header class="container-fluid py-3 d-flex justify-content-center align-items-center mx-auto w-100" style="position: fixed; opacity: 80%;">
+        <div class="d-flex justify-content-between align-items-center w-75">
+            <h1 class="fw-bold text-primary">Prove<span class="dark-blue">Tic</span></h1>
+            <nav>
+                <ul class="nav">
+                    <li class="nav-item"><a href="#" class="nav-link">Home</a></li>
+                    <li class="nav-item"><a href="#" class="nav-link">Productos</a></li>
+                    <li class="nav-item"><a href="#" class="nav-link">FAQ</a></li>
+                    <li class="nav-item"><a href="#" class="nav-link">Blog</a></li>
+                    <span style="width: 40px;"></span>
+                    <li class="nav-item"><a href="/login" class="btn btn-outline-secondary">Login</a></li>
+                    <span style="width: 15px;"></span>
+                    <li class="nav-item"><a href="/register" class="btn btn-primary">Unirse</a></li>
+                </ul>
+            </nav>
+        </div>
+    </header>
+
+    {% with messages = get_flashed_messages(with_categories=true) %}
+        {% if messages %}
+            {% for category, message in messages %}
+            <div class="alert alert-{{ category }}" role="alert">
+                {{ message }}
+            </div>
+            {% endfor %}
+        {% endif %}
+    {% endwith %}
+    
+    <div class="bg-light-blue" style="padding-top: 70px;">
+        <section class="container text-center py-5 d-flex align-items-center justify-content-center" style="height: 60vh;">
+            <div class="row w-100 d-flex align-items-center">
+                <div class="col-md-6">
+                    <h2 class="fw-bold">Tu negocio, con stock automático.</h2>
+                    <h3>(Sí, así de simple)</h3>
+                    <p class="lead">¿Cansado de realizar pedidos manualmente? ¿Preocupado por quedarte sin stock? ProveTic es la solución que tu negocio necesita.</p>
+                    <div>
+                        <a href="/register" class="btn btn-primary">Comenzar</a>
+                        <a href="#" class="btn btn-outline-secondary">Ver demo</a>
+                    </div>
+                </div>
+                <div class="col-md-6 d-flex justify-content-center">
+                    <img src="{{ url_for('static', filename='images/landing1.png') }}" alt="Imagen" class="img-fluid" style="height: 50vh;">
+                </div>
+            </div>  
+            <br><br>
+        </section>
+        <section class="container text-center py-5 align-items-center justify-content-center">
+            <h3>Ya automatizaron sus pedidos</h3>          
+            <img src="{{ url_for('static', filename='images/landing2.png') }}" alt="Imagen" class="img-fluid">
+        </section>
+    </div>
+    
+    <div class="">
+        <section class="container py-5 d-flex align-items-center justify-content-center" style="height: 60vh;">
+            <div class="row w-100 d-flex align-items-center g-5">
+                <div class="col-md-6">
+                    <h2 class="fw-bold">Apoyamos el ecosistema empresarial</h2>
+                    <p class="lead">Provetic conecta su inventario y automatiza sus pedidos directamente con sus proveedores, asegurando que siempre tenga los productos que necesita, cuando los necesita.</p>
+                    <div class="row ">
+                        <!-- Primera reseña -->
+                        <div class="col-md-6">
+                            <div class="rating">
+                                <i class="fas fa-star text-warning"></i>
+                                <i class="fas fa-star text-warning"></i>
+                                <i class="fas fa-star text-warning"></i>
+                                <i class="fas fa-star text-warning"></i>
+                                <i class="fas fa-star text-warning"></i>
+                            </div>
+                            <p class="fw-bold">4.9 <span class="text-muted">/ 5 rating</span></p>
+                            <p class="text-secondary">ACIR</p>
+                        </div>
+                        <!-- Segunda reseña -->
+                        <div class="col-md-6">
+                            <div class="rating">
+                                <i class="fas fa-star text-warning"></i>
+                                <i class="fas fa-star text-warning"></i>
+                                <i class="fas fa-star text-warning"></i>
+                                <i class="fas fa-star text-warning"></i>
+                                <i class="fas fa-star text-warning"></i>
+                            </div>
+                            <p class="fw-bold">4.8 <span class="text-muted">/ 5 rating</span></p>
+                            <p class="text-secondary">UTEC Innova</p>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-6 justify-content-center">
+                    <div class="row">
+                        <div class="icon-box col-md-3">
+                            <i class="fas fa-wave-square"></i> 
+                        </div>
+                        <div class="col-md-9">
+                            <h3>Aumentamos tu eficiencia</h3>
+                            <p>Optimiza tus niveles de stock automáticamente. Evita pedir por demás o quedarte sin stock, ten un inventario eficiente.</p>
+                        </div>
+                    </div>
+                    
+                    <div class="row">
+                        <div class="icon-box col-md-3">
+                            <i class="fas fa-chart-pie"></i> 
+                        </div>
+                        <div class="col-md-9">
+                            <h3>Ahorramos tu tiempo</h3>
+                            <p>Olvídate de revisar manualmente tu inventario. Envía pedidos a tus proveedores vía WhatsApp automáticamente.</p>
+                        </div>
+                    </div>
+                    
+                    <div class="row">
+                        <div class="icon-box col-md-3">
+                            <span style="font-size: 24px; font-weight: bold;" class="dark-blue">⌘</span>
+                        </div>
+                        <div class="col-md-9">
+                            <h3>Eliminamos los errores y demoras</h3>
+                            <p>Elimina pedidos duplicados, tardíos o con cantidades incorrectas.</p>
+                        </div>
+                    </div>
+                </div>
+            </div>  
+            <br><br>
+        </section>
+    </div>
+
+    <div class="bg-light-blue" style="padding-top: 20px;">
+        <section class="container text-center py-5" >
+            <div class="row w-100 d-flex align-items-center">
+                <div class="col-md-3">
+                    <h2 class="fw-bold">¿Cómo funciona?</h2>
+                </div>
+                <div class="col-md-7">
+                    <h4>Nuestra herramienta es super amigable. Pensada para personas con o sin experiencia en tecnología.</h4>
+                </div>
+                <div class="col-md-2">
+                    <a href="/register" class="btn btn-primary">Comenzar</a>
+                </div>
+            </div>  
+            <br><br>
+            <div class="row w-100 d-flex align-items-center">
+                <div class="col-md-4">
+                    <img src="{{ url_for('static', filename='images/landing1.png') }}" alt="Imagen" class="img-fluid" style="height: 300px">
+                    <h3 class="fw-bold">1. Conecta tu inventario</h3>
+                    <p>Enlaza tus datos como por ejemplo una hoja de cálculo de Google Sheets con Provetic</p>
+                </div>
+                <div class="col-md-4">
+                    <img src="{{ url_for('static', filename='images/landing1.png') }}" alt="Imagen" class="img-fluid" style="height: 300px"> 
+                    <h3 class="fw-bold">2. Configura tus parámetros</h3>
+                    <p>Establece niveles mínimos de stock para cada producto</p>
+                </div>
+                <div class="col-md-4">
+                    <img src="{{ url_for('static', filename='images/landing1.png') }}" alt="Imagen" class="img-fluid" style="height: 300px">
+                    <h3 class="fw-bold">3. Relájate y enfócate en tu negocio</h3>
+                    <p>Provetic se encarga del resto</p>
+                </div>
+            </div>  
+        </section>
+    </div>
+
+    <div class="" >
+        <section class="container py-5 d-flex align-items-center justify-content-center" style="height: 60vh;">
+            <div class="row w-100 d-flex align-items-center">
+                <div class="col-md-6">
+                    <h2 class="fw-bold">Qué beneficios obtendrás</h2>
+                    <ul style="list-style: none;">
+                        <li><i class="fa-solid fa-circle-check" style="color:green"></i> Ahorrá tiempo</li>
+                        <li><i class="fa-solid fa-circle-check" style="color:green"></i> Reduce errores</li>
+                        <li><i class="fa-solid fa-circle-check" style="color:green"></i> Eleva tu eficiencia</li>
+                        <li><i class="fa-solid fa-circle-check" style="color:green"></i> Comunícate sin esfuerzo</li>
+                        <li><i class="fa-solid fa-circle-check" style="color:green"></i> Analiza tus datos</li>
+                        <li><i class="fa-solid fa-circle-check" style="color:green"></i> Y mucho más!</li>
+                    </ul>
+                </div>
+                <div class="col-md-6 d-flex justify-content-center">
+                    <img src="{{ url_for('static', filename='images/landing1.png') }}" alt="Imagen" class="img-fluid" style="height: 50vh;">
+                </div>
+            </div>  
+            <br><br>
+        </section>
+    </div>
+
+    <div class="bg-light-blue">
+        <section class="container text-center py-5">
+            <h2 class="fw-bold">Precio único de lanzamiento!</h2>
+            <p>El mismo plan, accesible para todas las empresas</p>
+            
+            <div class="row g-4 justify-content-center">
+
+                <!-- Free Plan -->
+                <div class="col-md-4">
+                    <div class="card text-center">
+                        <div class="card-header bg-white">
+                            <h3 class="fw-bold">Free</h3>
+                            <p class="mb-0">Have a go and test your superpowers</p>
+                        </div>
+                        <div class="card-body">
+                            <h3 class="fw-bold">$0</h3>
+                            <ul class="list-unstyled">
+                                <li>✅ 2 Users</li>
+                                <li>✅ 2 Files</li>
+                                <li>✅ Public Share & Comments</li>
+                                <li>✅ Chat Support</li>
+                                <li>✅ New income apps</li>
+                            </ul>
+                            <a href="/register" class="btn btn-success">Signup for free</a>
+                        </div>
+                    </div>
+                </div>
+    
+                <!-- Pro Plan -->
+                <div class="col-md-4">
+                    <div class="card text-center">
+                        <div class="card-header pro-card">
+                            <h3 class="fw-bold">Pro</h3>
+                            <p class="mb-0">Obtén todas las funciones!</p>
+                        </div>
+                        <div class="card-body">
+                            <h3 class="pro-price">$49.90</h3>
+                            <span class="badge bg-success">Claro que sí!</span>
+                            <ul class="list-unstyled mt-3">
+                                <li>✅ 4 usuarios</li>
+                                <li>✅ Integraciones</li>
+                                <li>✅ 1000 mensajes gratuitos</li>
+                                <li>✅ Asistencia de instalación</li>
+                                <li>✅ Acceso a mejoras</li>
+                            </ul>
+                            <a href="#" class="btn btn-primary">Cuenten conmigo</a>
+                        </div>
+                    </div>
+                </div>
+    
+                <!-- Business Plan -->
+                <div class="col-md-4">
+                    <div class="card text-center">
+                        <div class="card-header bg-white">
+                            <h3 class="fw-bold">Business</h3>
+                            <p class="mb-0">Unveil new superpowers and join the Design League</p>
+                        </div>
+                        <div class="card-body">
+                            <h3 class="fw-bold">$0</h3>
+                            <ul class="list-unstyled">
+                                <li>✅ All the features of pro plan</li>
+                                <li>✅ Account success Manager</li>
+                                <li>✅ Single Sign-On (SSO)</li>
+                                <li>✅ Co-conception program</li>
+                                <li>✅ Collaboration - Soon</li>
+                            </ul>
+                            <a href="#" class="btn btn-success">Goto Business</a>
+                        </div>
+                    </div>
+                </div>
+    
+            </div>
+
+        </section>
+    </div>
+
+    
+    <div class="py-5 bg-footer">
+        <div class="container">
+            <div class="row align-items-center">
+                <!-- Testimonio -->
+                <div class="col-md-6">
+                    <h1 class="fw-bold" style="color:white">Que dice la gente de Prove<span class="highlight">Tic</span></h1>
+                    <p class="text-secondary">La herramienta justa para hacer crecer tu negocio.</p>
+                    <p class="quote">"Al principio no estábamos seguros, pero luego de ver lo mucho que nos ahorró, ni lo pensamos! 😍"</p>
+                    <p>-- Aria Zinanrio</p>
+                    <div class="testimonial d-flex align-items-center">
+                        <img src="https://randomuser.me/api/portraits/men/32.jpg" alt="User">
+                        <img src="https://randomuser.me/api/portraits/men/45.jpg" alt="User">
+                        <img src="https://randomuser.me/api/portraits/men/50.jpg" alt="User">
+                        <img src="https://randomuser.me/api/portraits/men/55.jpg" alt="User">
+                        <button class="btn btn-outline-light ms-2">▶</button>
+                    </div>
+                </div>
+
+                <!-- Formulario -->
+                <div class="col-md-6">
+                    <div class="card-custom">
+                        <div class="text-center mb-3">
+                            <img src="https://cdn-icons-png.flaticon.com/512/3313/3313894.png" width="50" alt="Icon">
+                            <h3>Get Started</h3>
+                        </div>
+                        <form>
+                            <div class="mb-3">
+                                <label class="form-label">Email</label>
+                                <input type="email" class="form-control" placeholder="Enter your email">
+                            </div>
+                            <div class="mb-3">
+                                <label class="form-label">Message</label>
+                                <textarea class="form-control" placeholder="What are you say?"></textarea>
+                            </div>
+                            <button class="btn btn-custom w-100">Request Demo</button>
+                            <p class="text-center text-secondary mt-2">or Start Free Trial</p>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Footer -->
+    <footer class="footer text-center text-md-start bg-footer">
+        <div class="container">
+            <div class="row">
+                <div class="col-md-4">
+                    <h3><span class="highlight">Prove</span>Tic</h3>
+                    <p class="text-secondary">Pedidos, automáticos</p>
+                    <div class="input-group">
+                        <input type="text" class="form-control" placeholder="Enter your email here">
+                        <button class="btn btn-success">➜</button>
+                    </div>
+                </div>
+                <div class="col-md-2">
+                    <h5 class="text-white">Support</h5>
+                    <a href="#">Help centre</a><br>
+                    <a href="#">Account information</a><br>
+                    <a href="#">About</a><br>
+                    <a href="#">Contact us</a>
+                </div>
+                <div class="col-md-2">
+                    <h5 class="text-white">Help & Solution</h5>
+                    <a href="#">Talk to support</a><br>
+                    <a href="#">Support docs</a><br>
+                    <a href="#">System status</a><br>
+                    <a href="#">Covid response</a>
+                </div>
+                <div class="col-md-2">
+                    <h5 class="text-white">Product</h5>
+                    <a href="#">Update</a><br>
+                    <a href="#">Security</a><br>
+                    <a href="#">Beta test</a><br>
+                    <a href="#">Pricing product</a>
+                </div>
+            </div>
+            <div class="text-center text-secondary mt-4">
+                © 2024 Provetic Inc. Copyright and rights reserved
+                <br>
+                <a href="#">Terms and Conditions</a> • <a href="#">Privacy Policy</a>
+            </div>
+        </div>
+    </footer>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+</body>
+</html>

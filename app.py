@@ -1,16 +1,18 @@
 from flask import Flask
-from flask_sqlalchemy import SQLAlchemy
+from models import Usuario,db
 
 # Inicialización de la app y configuración
-app = Flask(__name__)
+app = Flask(__name__, static_folder='static')
 app.secret_key = 'tu_clave_secreta'
 app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///db.sqlite'
 
-db = SQLAlchemy(app)
+db.init_app(app)
 
 from routes import *
 
 if __name__ == '__main__':
     with app.app_context():
         db.create_all()
+        print('Tablas creadas:', db.metadata.tables.keys())
+
     app.run(debug=True)

@@ -1,0 +1,121 @@
+body {
+    font-family: 'Arial', sans-serif;
+    background: linear-gradient(to bottom, #f8f9fa, #e9ecef);
+    color: #333;
+}
+header {
+    background: #fff;
+    box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+}
+h1 {
+    color: #0d6efd;
+}
+.btn-primary {
+    background-color: #033073;
+    border: none;
+}
+.btn-primary:hover {
+    background-color: #0b5ed7;
+}
+.btn-outline-secondary {
+    border-color: #0f0f0f;
+    color: #0f0f0f;
+}
+.btn-outline-secondary:hover {
+    background-color: #0d6efd;
+    color: #fff;
+}
+.dark-blue{
+    color: #033073
+}
+.nav-link{
+    color: #0f0f0f
+}
+.bg-light-blue{
+    background-color: #E3ECF6;
+}
+
+.icon-box {
+    width: 50px; 
+    height: 50px;
+    background-color: white; 
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 8px; 
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2); 
+}
+
+.icon-box i {
+    font-size: 24px; 
+    color: #004080; 
+}
+.card {
+    border-radius: 15px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+}
+
+.card-header {
+    font-size: 1.5rem;
+    font-weight: bold;
+}
+
+.pro-card {
+    background: #1e5799;
+    color: white;
+    border-top-left-radius: 15px;
+    border-top-right-radius: 15px;
+}
+
+.pro-price {
+    font-size: 2rem;
+    font-weight: bold;
+}
+.bg-footer{
+    background-color: #161C28;
+    color: white !important
+}
+
+.highlight {
+    color: #004080;
+    font-weight: bold;
+}
+
+.quote {
+    font-size: 1.2rem;
+    font-style: italic;
+}
+
+.testimonial img {
+    width: 50px;
+    height: 50px;
+    border-radius: 50%;
+    margin-right: 8px;
+}
+
+.card-custom {
+    background-color: #1f2937;
+    padding: 2rem;
+    border-radius: 15px;
+}
+
+.btn-custom {
+    background-color: #2563eb;
+    color: white;
+    border-radius: 5px;
+    padding: 10px 20px;
+}
+
+.footer {
+    padding: 2rem 0;
+    font-size: 0.9rem;
+}
+
+.footer a {
+    color: #9ca3af;
+    text-decoration: none;
+}
+
+.footer a:hover {
+    color: white;
+}
