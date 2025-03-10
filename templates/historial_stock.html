@@ -1,0 +1,47 @@
+{% extends "layout.html" %}
+{% block body_class %} sidebar-mini {% endblock %}
+{% block title %} Historial de Stock {% endblock %}
+{% block path %} <li class="breadcrumb-item"><a href="/historial_stock">Historial de Stock</a></li> {% endblock %}
+
+{% block content %}
+<div class="row mt-4">
+    <div class="col-md-12">
+        <div class="card">
+            <div class="card-header">
+                <h3 class="card-title">Historial de Movimientos de Stock</h3>
+            </div>
+            <div class="card-body">
+                <table class="table table-bordered table-striped">
+                    <thead>
+                        <tr>
+                            <th>Producto</th>
+                            <th>Cantidad</th>
+                            <th>Fecha</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for movimiento in movimientos %}
+                            <tr>
+                                <td>{{ movimiento.producto.nombre }}</td>
+                                <td>{{ movimiento.cantidad }}</td>
+                                <td>{{ movimiento.fecha.strftime('%d/%m/%Y %H:%M') }}</td>
+                            </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}
+
+{% block scripts %} 
+<script>
+
+    $(document).ready(function () {
+        $(".nav-link").removeClass("active");
+        $("a[href='{{ url_for('historial_stock') }}']").addClass("active");
+        $("a[href='{{ url_for('historial_stock') }}']").parent().parent().parent().addClass("menu-open");
+    });
+</script>
+{% endblock %}

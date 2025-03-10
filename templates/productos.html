@@ -1,0 +1,122 @@
+{% extends "layout.html" %}
+{% block body_class %} sidebar-mini {% endblock %}
+{% block title %} Productos {% endblock %}
+{% block path %} <li class="breadcrumb-item"><a href="/productos">Productos</a></li> {% endblock %}
+
+{% block content %}
+<div class="row">
+    <div class="card card-success col-md-12">
+        <div class="card-header">
+            <h3 class="card-title">Cargar Productos desde Excel</h3>
+        </div>
+        <form action="{{ url_for('productos') }}" method="POST" enctype="multipart/form-data">
+            <div class="card-body row">
+                <div class="col-md-9">
+                    <div class="form-group">
+                        <label for="file">Seleccionar archivo Excel</label>
+                        <input type="file" class="form-control" id="file" name="file" accept=".xls,.xlsx" required>
+                    </div>
+                </div>
+                
+            
+                <div class="col-md-3">
+                    <button type="submit" class="btn btn-success" style="margin-top: 2rem">Cargar Archivo</button>
+                </div>
+            </div>
+        </form>
+    </div>
+</div>
+
+<div class="row mt-4">
+    <div class="col-md-12">
+        <div class="card">
+            <div class="card-header">
+                <h3 class="card-title">Lista de Productos</h3>
+            </div>
+            <div class="card-body">
+                <table class="table table-bordered table-striped">
+                    <thead>
+                        <tr>
+                            <th>Nombre</th>
+                            <th>Proveedor</th>
+                            <th>Stock Actual</th>
+                            <th>Unidades</th>
+                            <th>ROP</th>
+                            <th>Lote</th>
+                            <th>Acciones</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for producto in productos %}
+                            <tr>
+                                <td>{{ producto.nombre }}</td>
+                                <td>{{ producto.proveedor.nombre }}</td>
+                                <td><input type="number" value="{{ producto.stock_actual }}" class="form-control actualizar-stock" data-id="{{ producto.id }}" id="stock-input-{{producto.id}}"></td>
+                                <td>{{producto.unidades}}</td>
+                                <td><input type="number" value="{{ producto.rop }}" class="form-control actualizar-rop" data-id="{{ producto.id }}" id="rop-input-{{producto.id}}"></td>
+                                <td><input type="number" value="{{ producto.lote }}" class="form-control actualizar-lote" data-id="{{ producto.id }}" id="lote-input-{{producto.id}}"></td>
+                                <td><button class="btn btn-primary btn-actualizar" data-id="{{ producto.id }}">Actualizar</button></td>
+                            </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}
+
+{% block scripts %} 
+<script>
+    $(document).ready(function () {
+        $(".nav-link").removeClass("active");
+        $("a[href='{{ url_for('productos') }}']").addClass("active");
+        $("a[href='{{ url_for('productos') }}']").parent().parent().parent().addClass("menu-open");
+    });
+</script>
+<script>
+    async function actualizarProducto(productoId) {
+        const nuevoStock = document.getElementById(`stock-input-${productoId}`).value;
+        const nuevoROP = document.getElementById(`rop-input-${productoId}`).value;
+        const nuevoLote = document.getElementById(`lote-input-${productoId}`).value;
+
+        if (isNaN(nuevoStock) || isNaN(nuevoROP) || isNaN(nuevoLote)) {
+            alert("Por favor, ingrese valores numéricos válidos.");
+            return;
+        }
+
+        try {
+            const response = await fetch("{{ url_for('actualizar_producto') }}", {
+                method: "POST",
+                headers: {
+                    "Content-Type": "application/json",
+                },
+                body: JSON.stringify({ 
+                    producto_id: productoId, 
+                    nuevo_stock: nuevoStock,
+                    nuevo_rop: nuevoROP,
+                    nuevo_lote: nuevoLote
+                }),
+            });
+
+            const result = await response.json();
+            if (result.success) {
+                alert(`Producto actualizado con éxito.`);
+                location.reload();
+            } else {
+                alert("Error: " + result.error);
+            }
+        } catch (error) {
+            console.error("Error al actualizar el producto:", error);
+            alert("Hubo un problema al actualizar el producto.");
+        }
+    }
+
+    document.querySelectorAll('.btn-actualizar').forEach(button => {
+        button.addEventListener('click', function () {
+            const productoId = this.getAttribute('data-id');
+            actualizarProducto(productoId);
+        });
+    });
+</script>
+{% endblock %}

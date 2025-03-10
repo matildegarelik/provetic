@@ -181,7 +181,7 @@
                         with font-awesome or any other icon font library -->
                 
                 <li class="nav-item">
-                    <a href="/configuracion" class="nav-link">
+                    <a href="{{ url_for('configuracion') }}" class="nav-link">
                     <i class="nav-icon fas fa-th"></i>
                     <p>
                         Configuración
@@ -199,13 +199,13 @@
                     </a>
                     <ul class="nav nav-treeview">
                     <li class="nav-item">
-                        <a href="pages/layout/top-nav.html" class="nav-link">
+                        <a href="{{ url_for('proveedores') }}" class="nav-link">
                         <i class="far fa-circle nav-icon"></i>
                         <p>Proveedores</p>
                         </a>
                     </li>
                     <li class="nav-item">
-                        <a href="pages/layout/top-nav-sidebar.html" class="nav-link">
+                        <a href="{{ url_for('definiciones') }}" class="nav-link">
                         <i class="far fa-circle nav-icon"></i>
                         <p>Definiciones</p>
                         </a>
@@ -218,7 +218,6 @@
                     <i class="nav-icon fas fa-chart-pie"></i>
                     <p>
                         Pedidos
-                        <i class="right fas fa-angle-left"></i>
                     </p>
                     </a>
                 </li>
@@ -226,11 +225,27 @@
                     <a href="#" class="nav-link">
                     <i class="nav-icon fas fa-tree"></i>
                     <p>
-                        Stock
+                        Stock                        
                         <i class="fas fa-angle-left right"></i>
+                        <span class="badge badge-info right">2</span>
                     </p>
                     </a>
-                </li>                
+                    <ul class="nav nav-treeview">
+                    <li class="nav-item">
+                        <a href="{{ url_for('productos') }}" class="nav-link">
+                        <i class="far fa-circle nav-icon"></i>
+                        <p>Productos</p>
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a href="{{ url_for('historial_stock') }}" class="nav-link">
+                        <i class="far fa-circle nav-icon"></i>
+                        <p>Historial</p>
+                        </a>
+                    </li>
+                  
+                    </ul>
+                </li>         
                 </ul>
             </nav>
             <!-- /.sidebar-menu -->
@@ -273,6 +288,8 @@
     
     
         {% block content %}{% endblock %}
+        </div>
+            </div>
     </div>
     <!-- /.content-wrapper -->
     
@@ -305,6 +322,8 @@
     <script src="{{ url_for('static', filename='dist/js/demo.js') }}"></script>
     <!-- AdminLTE dashboard demo (This is only for demo purposes) -->
     <script src="{{ url_for('static', filename='dist/js/pages/dashboard3.js') }}"></script>
+
+    {% block scripts %} {% endblock %}
 </body>
 </html>
 

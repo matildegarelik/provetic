@@ -1,0 +1,57 @@
+{% extends "layout.html" %}
+{% block body_class %} sidebar-mini {% endblock %}
+{% block title %} Configuración {% endblock %}
+{% block path %} <li class="breadcrumb-item"><a href="/configuracion">Configuración</a></li> {% endblock %}
+
+{% block content %}
+
+<div class="row">
+    
+    <div class="col-md-3"></div>
+    <div class="col-md-6">
+        <div class="card card-primary">
+            <div class="card-header">
+                <h3 class="card-title">Actualizar Configuración</h3>
+            </div>
+            <form action="{{ url_for('configuracion') }}" method="POST">
+                <div class="card-body">
+                    <div class="form-group">
+                        <label for="email">Correo Electrónico</label>
+                        <input type="email" class="form-control" id="email" name="email"
+                               value="{{ usuario.email if usuario.email else '' }}" >
+                    </div>
+                    <div class="form-group">
+                        <label for="telefono">Teléfono</label>
+                        <input type="text" class="form-control" id="telefono" name="telefono"
+                               value="{{ usuario.numero if usuario.numero else '' }}" >
+                    </div>
+                    <div class="form-group">
+                        <label for="comercio">Nombre del Comercio</label>
+                        <input type="text" class="form-control" id="comercio" name="comercio"
+                               value="{{ usuario.nombre_comercio if usuario.nombre_comercio else '' }}" >
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="comercio">Plantilla WhatsApp</label>
+                        <input type="text" class="form-control" id="plantilla" name="plantilla"
+                               value="{{ usuario.plantilla_wsp if usuario.plantilla_wsp else '' }}" >
+                    </div>
+                </div>
+                <div class="card-footer">
+                    <button type="submit" class="btn btn-primary">Guardar Cambios</button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+
+{% endblock %}
+
+{% block scripts %} 
+<script>
+    $(document).ready(function () {
+        $(".nav-link").removeClass("active");
+        $("a[href='{{ url_for('configuracion') }}']").addClass("active");
+    });
+</script>
+{% endblock %}

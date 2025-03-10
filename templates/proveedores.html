@@ -1,0 +1,112 @@
+{% extends "layout.html" %}
+{% block body_class %} sidebar-mini {% endblock %}
+{% block title %} Proveedores {% endblock %}
+{% block path %} <li class="breadcrumb-item"><a href="/proveedores">Proveedores</a></li> {% endblock %}
+
+{% block content %}
+<div class="row">
+    <div class="col-md-6">
+        <div class="card card-primary">
+            <div class="card-header">
+                <h3 class="card-title">Agregar Proveedor Manualmente</h3>
+            </div>
+            <form action="{{ url_for('proveedores') }}" method="POST">
+                <div class="card-body">
+                    <div class="form-group">
+                        <label for="codigo">Código</label>
+                        <input type="text" class="form-control" id="codigo" name="codigo" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="nombre">Nombre</label>
+                        <input type="text" class="form-control" id="nombre" name="nombre" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="email">Email</label>
+                        <input type="email" class="form-control" id="email" name="email" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="whatsapp">WhatsApp</label>
+                        <input type="text" class="form-control" id="whatsapp" name="whatsapp" placeholder="Opcional">
+                    </div>
+                    <div class="form-group">
+                        <label for="leap_time">Tiempo de entrega (días)</label>
+                        <input type="number" class="form-control" id="leap_time" name="leap_time" required>
+                    </div>
+                </div>
+                <div class="card-footer">
+                    <button type="submit" class="btn btn-primary">Guardar Proveedor</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <div class="col-md-6">
+        <div class="card card-success">
+            <div class="card-header">
+                <h3 class="card-title">Cargar Proveedores desde Excel</h3>
+            </div>
+            <form action="{{ url_for('proveedores') }}" method="POST" enctype="multipart/form-data">
+                <div class="card-body">
+                    <div class="form-group">
+                        <label for="file">Seleccionar archivo Excel</label>
+                        <input type="file" class="form-control" id="file" name="file" accept=".xls,.xlsx" required>
+                    </div>
+                </div>
+                <div class="card-footer">
+                    <button type="submit" class="btn btn-success">Cargar Archivo</button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+
+<div class="row mt-4">
+    <div class="col-md-12">
+        <div class="card">
+            <div class="card-header">
+                <h3 class="card-title">Lista de Proveedores</h3>
+            </div>
+            <div class="card-body">
+                <table class="table table-bordered table-striped">
+                    <thead>
+                        <tr>
+                            <th>Código</th>
+                            <th>Nombre</th>
+                            <th>Email</th>
+                            <th>WhatsApp</th>
+                            <th>Tiempo de Entrega (días)</th>
+                            <th>Acciones</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for proveedor in proveedores %}
+                            <tr>
+                                <form action="{{ url_for('proveedores') }}" method="POST">
+                                    <input type="hidden" name="edit_id" value="{{ proveedor.id }}">
+                                    <td><input type="text" name="codigo" value="{{ proveedor.codigo }}" class="form-control"></td>
+                                    <td><input type="text" name="nombre" value="{{ proveedor.nombre }}" class="form-control"></td>
+                                    <td><input type="email" name="email" value="{{ proveedor.email }}" class="form-control"></td>
+                                    <td><input type="text" name="whatsapp" value="{{ proveedor.whatsapp if proveedor.whatsapp else '' }}" class="form-control"></td>
+                                    <td><input type="number" name="leap_time" value="{{ proveedor.leap_time }}" class="form-control"></td>
+                                    <td><button type="submit" class="btn btn-warning btn-sm">Guardar</button></td>
+                                </form>
+                            </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}
+
+
+{% block scripts %} 
+<script>
+    $(document).ready(function () {
+        $(".nav-link").removeClass("active");
+        $("a[href='{{ url_for('proveedores') }}']").addClass("active");
+        $("a[href='{{ url_for('proveedores') }}']").parent().parent().parent().addClass("menu-open");
+    });
+</script>
+{% endblock %}

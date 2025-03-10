@@ -1,0 +1,60 @@
+{% extends "layout.html" %}
+{% block body_class %} sidebar-mini {% endblock %}
+{% block title %} Definiciones {% endblock %}
+{% block path %} <li class="breadcrumb-item"><a href="/definiciones">Definiciones</a></li> {% endblock %}
+
+{% block content %}
+
+<div class="row">
+    <div class="col-md-3"></div>
+    <div class="col-md-6">
+        <div class="card card-primary">
+            <div class="card-header">
+                <h3 class="card-title">Actualizar Definiciones</h3>
+            </div>
+            <form action="{{ url_for('definiciones') }}" method="POST">
+                <div class="card-body">
+                    <div class="form-group">
+                        <label for="autom">Envío de pedidos automático</label>
+                        <div class="custom-control custom-switch">
+                            <input type="checkbox" class="custom-control-input" id="autom" name="autom" {% if definicion.autom %}checked{% endif %}>
+                            <label class="custom-control-label" for="autom">Activar</label>
+                        </div>
+                    </div>
+                    
+                    <div class="form-group" id="dias-group" {% if definicion.autom %}style="display: none;"{% endif %}>
+                        <label for="dias">Días</label>
+                        <input type="number" class="form-control" id="dias" name="dias" value="{{ definicion.dias if definicion.dias else 14 }}">
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="menor">Hacer pedido cuando el stock es menor al ROP </label>
+                        <div class="custom-control custom-switch">
+                            <input type="checkbox" class="custom-control-input" id="menor" name="menor" {% if definicion.menor %}checked{% endif %}>
+                            <label class="custom-control-label" for="menor">(desactivado: menor o igual)</label>
+                        </div>
+                    </div>
+                </div>
+                <div class="card-footer">
+                    <button type="submit" class="btn btn-primary">Guardar Cambios</button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+
+{% endblock %}
+
+{% block scripts %} 
+<script>
+    document.getElementById('autom').addEventListener('change', function() {
+        const diasGroup = document.getElementById('dias-group');
+        diasGroup.style.display = this.checked ? 'none' : 'block';
+    });
+    $(document).ready(function () {
+        $(".nav-link").removeClass("active");
+        $("a[href='{{ url_for('definiciones') }}']").addClass("active");
+        $("a[href='{{ url_for('definiciones') }}']").parent().parent().parent().addClass("menu-open");
+    });
+</script>
+{% endblock %}
