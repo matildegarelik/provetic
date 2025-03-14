@@ -1,10 +1,26 @@
 from flask import render_template, redirect, url_for, request, flash, session
 from app import app
-from models import Usuario, db, Definicion, Proveedor, MovimientoStock, Producto
+from models import Usuario, db, Definicion, Proveedor, MovimientoStock, Producto,Pedido
 from werkzeug.security import generate_password_hash, check_password_hash
 import pandas as pd
 from sqlalchemy import desc
 from datetime import datetime
+from dotenv import load_dotenv
+import os
+import requests
+
+# Cargar variables de entorno
+load_dotenv()
+
+WSP_TOKEN = os.getenv('WSP_TOKEN')
+WSP_BUSINESS_ID = os.getenv('WSP_BUSINESS_ID')
+WSP_PHONE_ID = os.getenv('WSP_PHONE_ID')
+WSP_API_URL = os.getenv('WSP_API_URL')
+
+HEADERS = {
+    "Authorization": f"Bearer {WSP_TOKEN}",
+    "Content-Type": "application/json"
+}
 
 @app.route('/')
 def landing():
@@ -53,6 +69,15 @@ def logout():
     flash('Sesión cerrada correctamente.','success')
     return redirect(url_for('landing'))
 
+def obtener_plantillas():
+    url = f"{WSP_API_URL}{WSP_BUSINESS_ID}/message_templates"
+    response = requests.get(url, headers=HEADERS)
+    if response.status_code == 200:
+        return response.json().get('data', [])
+    else:
+        print(f"Error al obtener plantillas: {response.json()}")
+        return []
+
 @app.route('/configuracion', methods=['GET', 'POST'])
 def configuracion():
     if 'user_id' not in session:
@@ -61,7 +86,9 @@ def configuracion():
 
     user_id = session['user_id']
     user = Usuario.query.filter_by(id=user_id).first()
+    plantillas = obtener_plantillas()
 
+    print(plantillas)
     if not user:
         flash('Usuario no encontrado', 'danger')
         return redirect(url_for('landing'))  
@@ -84,7 +111,7 @@ def configuracion():
             db.session.rollback()
             flash(f'Error al guardar cambios: {str(e)}', 'danger')
 
-    return render_template('configuracion.html', usuario=user)
+    return render_template('configuracion.html', usuario=user, plantillas=plantillas)
 
 @app.route('/definiciones', methods=['GET', 'POST'])
 def definiciones():
@@ -105,14 +132,18 @@ def definiciones():
         return redirect(url_for('landing'))  
 
     if request.method == 'POST':
-        autom = request.form.get('autom')
+        autom = 'autom' in request.form
         dias = request.form.get('dias')
-        menor = request.form.get('menor')
-
+        menor = 'menor' in request.form
+        
         try:
-            user.autom = autom
-            user.dias = dias  
-            user.menor = menor
+            definicion.autom = autom
+            definicion.dias = int(dias) if dias else None
+            definicion.menor = menor
+
+            # Solo actualiza 'ult_chequeo' si 'autom' está desactivado
+            if not autom:
+                definicion.ult_chequeo = datetime.now()
 
             db.session.commit()
             flash('Cambios guardados con éxito', 'success')
@@ -120,8 +151,7 @@ def definiciones():
             db.session.rollback()
             flash(f'Error al guardar cambios: {str(e)}', 'danger')
 
-    return render_template('definiciones.html', usuario=user, definicion= definicion)
-
+    return render_template('definiciones.html', usuario=user, definicion=definicion)
 @app.route('/proveedores', methods=['GET', 'POST'])
 def proveedores():
     if 'user_id' not in session:
@@ -319,3 +349,16 @@ def actualizar_producto():
         return {'success': True}, 200
     return {'error': 'Producto no encontrado o sin permisos'}, 404
 
+@app.route('/pedidos', methods=['GET'])
+def pedidos():
+    if 'user_id' not in session:
+        flash('Por favor inicia sesión primero.', 'danger')
+        return redirect(url_for('login'))
+
+    usuario = Usuario.query.get(session['user_id'])
+    if not usuario:
+        flash('Usuario no encontrado.', 'danger')
+        return redirect(url_for('login'))
+
+    pedidos = Pedido.query.filter_by(user_id=usuario.id).order_by(Pedido.fecha.desc()).all()
+    return render_template('pedidos.html', pedidos=pedidos, usuario=usuario)

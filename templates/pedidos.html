@@ -1,0 +1,55 @@
+{% extends "layout.html" %}
+{% block body_class %} sidebar-mini {% endblock %}
+{% block title %} Historial de Pedidos {% endblock %}
+{% block path %} <li class="breadcrumb-item"><a href="/pedidos">Pedidos</a></li> {% endblock %}
+
+{% block content %}
+<div class="row">
+    <div class="col-md-12">
+        <div class="card">
+            <div class="card-header">
+                <h3 class="card-title">Historial de Pedidos</h3>
+            </div>
+            <div class="card-body">
+                <table class="table table-bordered table-striped">
+                    <thead>
+                        <tr>
+                            <th>ID Pedido</th>
+                            <th>Fecha</th>
+                            <th>Proveedor</th>
+                            <th>Productos y Cantidades</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for pedido in pedidos %}
+                            <tr>
+                                <td>{{ pedido.id }}</td>
+                                <td>{{ pedido.fecha.strftime('%d/%m/%Y %H:%M') }}</td>
+                                <td>{{ pedido.proveedor.nombre }}</td>
+                                <td>
+                                    <ul>
+                                        {% for pp in pedido.productos %}
+                                            <li>
+                                                {{ pp.producto.nombre }} - {{ pp.cantidad_pedida }} {{pp.producto.unidades}}
+                                            </li>
+                                        {% endfor %}
+                                    </ul>
+                                </td>
+                            </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}
+
+{% block scripts %} 
+<script>
+    $(document).ready(function () {
+        $(".nav-link").removeClass("active");
+        $("a[href='{{ url_for('pedidos') }}']").addClass("active");
+    });
+</script>
+{% endblock %}

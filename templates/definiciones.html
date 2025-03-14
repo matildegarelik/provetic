@@ -14,6 +14,7 @@
             </div>
             <form action="{{ url_for('definiciones') }}" method="POST">
                 <div class="card-body">
+                    <!-- Envío automático -->
                     <div class="form-group">
                         <label for="autom">Envío de pedidos automático</label>
                         <div class="custom-control custom-switch">
@@ -21,20 +22,31 @@
                             <label class="custom-control-label" for="autom">Activar</label>
                         </div>
                     </div>
-                    
+
+                    <!-- Días (visible solo si autom está desactivado) -->
                     <div class="form-group" id="dias-group" {% if definicion.autom %}style="display: none;"{% endif %}>
                         <label for="dias">Días</label>
                         <input type="number" class="form-control" id="dias" name="dias" value="{{ definicion.dias if definicion.dias else 14 }}">
                     </div>
-                    
+
+                    <!-- Último chequeo (visible solo si autom está desactivado) -->
+                    <div class="form-group" id="ult-chequeo-group" {% if definicion.autom %}style="display: none;"{% endif %}>
+                        <label for="ult_chequeo">Último Chequeo</label>
+                        <input type="datetime-local" class="form-control" id="ult_chequeo" name="ult_chequeo" 
+                               value="{{ definicion.ult_chequeo.strftime('%Y-%m-%dT%H:%M') if definicion.ult_chequeo else '' }}">
+                    </div>
+
+                    <!-- ROP -->
                     <div class="form-group">
-                        <label for="menor">Hacer pedido cuando el stock es menor al ROP </label>
+                        <label for="menor">Hacer pedido cuando el stock es menor al ROP</label>
                         <div class="custom-control custom-switch">
                             <input type="checkbox" class="custom-control-input" id="menor" name="menor" {% if definicion.menor %}checked{% endif %}>
                             <label class="custom-control-label" for="menor">(desactivado: menor o igual)</label>
                         </div>
                     </div>
                 </div>
+                
+                <!-- Botón de guardar -->
                 <div class="card-footer">
                     <button type="submit" class="btn btn-primary">Guardar Cambios</button>
                 </div>
@@ -49,8 +61,16 @@
 <script>
     document.getElementById('autom').addEventListener('change', function() {
         const diasGroup = document.getElementById('dias-group');
-        diasGroup.style.display = this.checked ? 'none' : 'block';
+        const ultChequeoGroup = document.getElementById('ult-chequeo-group');
+        if (this.checked) {
+            diasGroup.style.display = 'none';
+            ultChequeoGroup.style.display = 'none';
+        } else {
+            diasGroup.style.display = 'block';
+            ultChequeoGroup.style.display = 'block';
+        }
     });
+
     $(document).ready(function () {
         $(".nav-link").removeClass("active");
         $("a[href='{{ url_for('definiciones') }}']").addClass("active");

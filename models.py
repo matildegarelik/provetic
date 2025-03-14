@@ -1,4 +1,5 @@
 from flask_sqlalchemy import SQLAlchemy
+from datetime import datetime
 
 # Inicializar SQLAlchemy
 db = SQLAlchemy()
@@ -51,6 +52,10 @@ class Pedido(db.Model):
     fecha = db.Column(db.DateTime, nullable=False)
     
     productos = db.relationship('PedidoProducto', back_populates='pedido', cascade='all, delete-orphan', lazy=True)
+   
+    @property
+    def user_id(self):
+        return self.proveedor.user_id if self.proveedor else None
 
 # Tabla intermedia para la relación One-to-Many entre Pedido y Producto
 class PedidoProducto(db.Model):
@@ -66,8 +71,9 @@ class PedidoProducto(db.Model):
 class Definicion(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     user_id = db.Column(db.Integer, db.ForeignKey('usuario.id'), nullable=False)
-    autom = db.Column(db.Boolean, default=False)  
+    autom = db.Column(db.Boolean, default=True)  
     dias = db.Column(db.Integer, default=14)
+    ult_chequeo = db.Column(db.DateTime, nullable=False,default=datetime.now)
     menor = db.Column(db.Boolean, default=True)   
 
 # Modelo de Movimiento de Stock
