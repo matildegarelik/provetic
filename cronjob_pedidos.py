@@ -18,6 +18,7 @@ def crear_pedidos_por_fecha():
             db.session.commit()
 
 def procesar_pedidos(usuarios):
+    print('-------------PROCESANDO PEDIDOS-----------')
     for usuario in usuarios:
         for proveedor in usuario.proveedores:
             productos_a_pedir = []
@@ -32,6 +33,8 @@ def procesar_pedidos(usuarios):
                     fecha_limite = ultimo_pedido.fecha + timedelta(days=proveedor.leap_time)
                     if fecha_limite > datetime.now():
                         leap_time_cumplido = False
+                else:
+                    leap_time_cumplido= True
 
                 if leap_time_cumplido and ((producto.rop > stock_actual) if usuario.definiciones[0].menor else (producto.rop >= stock_actual)):
                     productos_a_pedir.append((producto, producto.lote))
@@ -49,7 +52,7 @@ def procesar_pedidos(usuarios):
                         cantidad_pedida=cantidad
                     )
                     detalles_pedido+=f"{producto.nombre} - Cantidad: {cantidad} {producto.unidades}\n"
-                    enviar_mensaje(usuario,detalles_pedido)
+                    enviar_mensaje(proveedor,usuario,detalles_pedido)
                     db.session.add(pedido_producto)
                 db.session.commit()
 

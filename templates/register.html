@@ -12,7 +12,7 @@
           <div class="card-body">
             <p class="login-box-msg">Registrarse</p>
       
-            <form  action="{{ url_for('register') }}" method="POST">
+            <form action="{{ url_for('register') }}" method="POST" onsubmit="return validarFormulario()">
               <div class="input-group mb-3">
                 <input type="text" class="form-control" placeholder="Nombre de usuario" name="username" id="username" required>
                 <div class="input-group-append">
@@ -21,6 +21,7 @@
                   </div>
                 </div>
               </div>
+              
               <div class="input-group mb-3">
                 <input type="email" class="form-control" placeholder="Email" name="email" id="email" required>
                 <div class="input-group-append">
@@ -29,6 +30,7 @@
                   </div>
                 </div>
               </div>
+              
               <div class="input-group mb-3">
                 <input type="password" class="form-control" placeholder="Password" name="password" id="password" required>
                 <div class="input-group-append">
@@ -37,14 +39,18 @@
                   </div>
                 </div>
               </div>
+              
               <div class="input-group mb-3">
-                <input type="password" class="form-control" placeholder="Retype password" required>
+                <input type="password" class="form-control" placeholder="Retype password" id="retype_password" required>
                 <div class="input-group-append">
                   <div class="input-group-text">
                     <span class="fas fa-lock"></span>
                   </div>
                 </div>
               </div>
+              
+              <p id="error-message" class="text-danger" style="display: none;">Las contraseñas no coinciden.</p>
+              
               <div class="row">
                 <div class="col-12">
                   <div class="icheck-primary">
@@ -53,20 +59,46 @@
                      Estoy de acuerdo con los <a href="#">Términos y condiciones</a>
                     </label>
                   </div>
+                  <p id="terms-error" class="text-danger" style="display: none;">Debes aceptar los términos y condiciones.</p>
                 </div>
-                <!-- /.col -->
+                
                 <div class="col-12">
                   <button type="submit" class="btn btn-primary btn-block">Registrarse</button>
                 </div>
-                <!-- /.col -->
               </div>
             </form>
       
             <p>¿Ya tienes una cuenta? <a href="{{ url_for('login') }}">Inicia sesión aquí</a></p>
           </div>
-          <!-- /.form-box -->
-        </div><!-- /.card -->
+        </div>
       </div>
 </div>
+
+<script>
+function validarFormulario() {
+    let password = document.getElementById("password").value;
+    let retypePassword = document.getElementById("retype_password").value;
+    let termsChecked = document.getElementById("agreeTerms").checked;
+    
+    let errorMessage = document.getElementById("error-message");
+    let termsError = document.getElementById("terms-error");
+    
+    // Reiniciar mensajes de error
+    errorMessage.style.display = "none";
+    termsError.style.display = "none";
+
+    if (password !== retypePassword) {
+        errorMessage.style.display = "block";
+        return false; // Evita el envío del formulario
+    }
+    
+    if (!termsChecked) {
+        termsError.style.display = "block";
+        return false;
+    }
+
+    return true; // Permite el envío del formulario
+}
+</script>
 
 {% endblock %}

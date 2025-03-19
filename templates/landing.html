@@ -9,7 +9,9 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css">
 </head>
 <body>
-    <header class="container-fluid py-3 d-flex justify-content-center align-items-center mx-auto w-100" style="position: fixed; opacity: 80%;">
+    
+    <header class="container-fluid py-3 d-flex justify-content-center align-items-center mx-auto w-100"
+        style="position: fixed; top: 0; left: 0; right: 0; opacity: 80%; background: white; z-index: 1030;">
         <div class="d-flex justify-content-between align-items-center w-75">
             <h1 class="fw-bold text-primary">Prove<span class="dark-blue">Tic</span></h1>
             <nav>
@@ -19,25 +21,35 @@
                     <li class="nav-item"><a href="#" class="nav-link">FAQ</a></li>
                     <li class="nav-item"><a href="#" class="nav-link">Blog</a></li>
                     <span style="width: 40px;"></span>
-                    <li class="nav-item"><a href="/login" class="btn btn-outline-secondary">Login</a></li>
-                    <span style="width: 15px;"></span>
-                    <li class="nav-item"><a href="/register" class="btn btn-primary">Unirse</a></li>
+
+                    {% if 'user_id' in session %}
+                        <li class="nav-item"><a href="/logout" class="btn btn-outline-secondary">Logout</a></li>
+                        <span style="width: 15px;"></span>
+                        <li class="nav-item"><a href="/dashboard" class="btn btn-primary">Dashboard</a></li>
+                    {% else %}
+                        <li class="nav-item"><a href="/login" class="btn btn-outline-secondary">Login</a></li>
+                        <span style="width: 15px;"></span>
+                        <li class="nav-item"><a href="/register" class="btn btn-primary">Unirse</a></li>
+                    {% endif %}
                 </ul>
             </nav>
         </div>
     </header>
 
-    {% with messages = get_flashed_messages(with_categories=true) %}
-        {% if messages %}
-            {% for category, message in messages %}
-            <div class="alert alert-{{ category }}" role="alert">
-                {{ message }}
-            </div>
-            {% endfor %}
-        {% endif %}
-    {% endwith %}
-    
     <div class="bg-light-blue" style="padding-top: 70px;">
+        <div class="container mt-4">
+            {% with messages = get_flashed_messages(with_categories=true) %}
+                {% if messages %}
+                    {% for category, message in messages %}
+                        <div class="alert alert-{{ category }} alert-dismissible fade show" role="alert">
+                            <i class="icon fas fa-exclamation-triangle"></i> {{ message }}
+                            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                            
+                        </div>
+                    {% endfor %}
+                {% endif %}
+            {% endwith %}
+        </div>
         <section class="container text-center py-5 d-flex align-items-center justify-content-center" style="height: 60vh;">
             <div class="row w-100 d-flex align-items-center">
                 <div class="col-md-6">
@@ -55,10 +67,16 @@
             </div>  
             <br><br>
         </section>
-        <section class="container text-center py-5 align-items-center justify-content-center">
+        <section class="container text-center py-5">
             <h3>Ya automatizaron sus pedidos</h3>          
-            <img src="{{ url_for('static', filename='images/landing2.png') }}" alt="Imagen" class="img-fluid">
+            <div class="d-flex flex-wrap justify-content-center gap-3">
+                <img src="{{ url_for('static', filename='images/landing2_1.png') }}" alt="Imagen" class="img-fluid">
+                <img src="{{ url_for('static', filename='images/landing2_2.png') }}" alt="Imagen" class="img-fluid">
+                <img src="{{ url_for('static', filename='images/landing2_3.png') }}" alt="Imagen" class="img-fluid">
+                <img src="{{ url_for('static', filename='images/landing2_4.png') }}" alt="Imagen" class="img-fluid">
+            </div>
         </section>
+        
     </div>
     
     <div class="">
@@ -146,17 +164,17 @@
             <br><br>
             <div class="row w-100 d-flex align-items-center">
                 <div class="col-md-4">
-                    <img src="{{ url_for('static', filename='images/landing1.png') }}" alt="Imagen" class="img-fluid" style="height: 300px">
+                    <img src="{{ url_for('static', filename='images/landing3_1.png') }}" alt="Imagen" class="img-fluid" style="height: 300px">
                     <h3 class="fw-bold">1. Conecta tu inventario</h3>
                     <p>Enlaza tus datos como por ejemplo una hoja de cálculo de Google Sheets con Provetic</p>
                 </div>
                 <div class="col-md-4">
-                    <img src="{{ url_for('static', filename='images/landing1.png') }}" alt="Imagen" class="img-fluid" style="height: 300px"> 
+                    <img src="{{ url_for('static', filename='images/landing3_2.png') }}" alt="Imagen" class="img-fluid" style="height: 300px"> 
                     <h3 class="fw-bold">2. Configura tus parámetros</h3>
                     <p>Establece niveles mínimos de stock para cada producto</p>
                 </div>
                 <div class="col-md-4">
-                    <img src="{{ url_for('static', filename='images/landing1.png') }}" alt="Imagen" class="img-fluid" style="height: 300px">
+                    <img src="{{ url_for('static', filename='images/landing3_3.png') }}" alt="Imagen" class="img-fluid" style="height: 300px">
                     <h3 class="fw-bold">3. Relájate y enfócate en tu negocio</h3>
                     <p>Provetic se encarga del resto</p>
                 </div>
@@ -168,14 +186,14 @@
         <section class="container py-5 d-flex align-items-center justify-content-center" style="height: 60vh;">
             <div class="row w-100 d-flex align-items-center">
                 <div class="col-md-6">
-                    <h2 class="fw-bold">Qué beneficios obtendrás</h2>
-                    <ul style="list-style: none;">
-                        <li><i class="fa-solid fa-circle-check" style="color:green"></i> Ahorrá tiempo</li>
-                        <li><i class="fa-solid fa-circle-check" style="color:green"></i> Reduce errores</li>
-                        <li><i class="fa-solid fa-circle-check" style="color:green"></i> Eleva tu eficiencia</li>
-                        <li><i class="fa-solid fa-circle-check" style="color:green"></i> Comunícate sin esfuerzo</li>
-                        <li><i class="fa-solid fa-circle-check" style="color:green"></i> Analiza tus datos</li>
-                        <li><i class="fa-solid fa-circle-check" style="color:green"></i> Y mucho más!</li>
+                    <h2 class="fw-bold" style="font-size: 40px;">Qué beneficios obtendrás</h2>
+                    <ul style="list-style: none; font-size: 20px;">
+                        <li><i class="fa-solid fa-circle-check" style="color:green"></i> Ahorrá tiempo</li><br/>
+                        <li><i class="fa-solid fa-circle-check" style="color:green"></i> Reduce errores</li><br/>
+                        <li><i class="fa-solid fa-circle-check" style="color:green"></i> Eleva tu eficiencia</li><br/>
+                        <li><i class="fa-solid fa-circle-check" style="color:green"></i> Comunícate sin esfuerzo</li><br/>
+                        <li><i class="fa-solid fa-circle-check" style="color:green"></i> Analiza tus datos</li><br/>
+                        <li><i class="fa-solid fa-circle-check" style="color:green"></i> Y mucho más!</li><br/>
                     </ul>
                 </div>
                 <div class="col-md-6 d-flex justify-content-center">

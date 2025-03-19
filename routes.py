@@ -13,6 +13,7 @@ import requests
 load_dotenv()
 
 WSP_TOKEN = os.getenv('WSP_TOKEN')
+#WSP_TOKEN= "EAATxpGTTXIkBO9ySTskR48rWCbr3sRUWH57FmeZCBFqM8diuHzXlJukmUUy15ZBc5L1ZCDVnUiDHgbsWifc2FxDWRSGIrAyp1gGJKiSiZBMG3gZA7MakZCxPfu2161NJMYZA4TsySgoQbMT2CRWZBoZCGrB5wyHHppYDdsvvZCZA3weZAZAaXVqZCVV1GzwKKoPeQTvaZB6F8QdLFFqZAGgSwU0WkaDs5WRmkqYZD"
 WSP_BUSINESS_ID = os.getenv('WSP_BUSINESS_ID')
 WSP_PHONE_ID = os.getenv('WSP_PHONE_ID')
 WSP_API_URL = os.getenv('WSP_API_URL')
@@ -31,8 +32,9 @@ def register():
     if request.method == 'POST':
         username = request.form['username']
         password = request.form['password']
+        email = request.form['email']
         hashed_password = generate_password_hash(password, method='pbkdf2:sha256')
-        user = Usuario(username=username, password=hashed_password)
+        user = Usuario(username=username, password=hashed_password,email=email)
         try:
             db.session.add(user)
             db.session.commit()
@@ -360,5 +362,5 @@ def pedidos():
         flash('Usuario no encontrado.', 'danger')
         return redirect(url_for('login'))
 
-    pedidos = Pedido.query.filter_by(user_id=usuario.id).order_by(Pedido.fecha.desc()).all()
+    pedidos = Pedido.query.join(Proveedor).filter(Proveedor.user_id == usuario.id).order_by(Pedido.fecha.desc()).all()
     return render_template('pedidos.html', pedidos=pedidos, usuario=usuario)

@@ -318,3 +318,12 @@
         <!-- /.content -->
 
 {% endblock %}
+
+{% block scripts %} 
+<script>
+    $(document).ready(function () {
+        $(".nav-link").removeClass("active");
+        $("a[href='{{ url_for('dashboard') }}']").addClass("active");
+    });
+</script>
+{% endblock %}
